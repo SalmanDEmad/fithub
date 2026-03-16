@@ -1,0 +1,16 @@
+{
+  "name": "fithub",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build:packages": "yarn workspace @fithub/tokens build && yarn workspace @fithub/shared build && yarn workspace @fithub/validation build && yarn workspace @fithub/api-client build",
+    "check:rtl": "node scripts/check-rtl-styles.js",
+    "api:dev": "cd apps/api && yarn start:dev",
+    "web:dev": "cd apps/web && yarn dev",
+    "mobile:dev": "cd apps/mobile && npx expo start",
+    "install:all": "yarn install"
+  }
+}

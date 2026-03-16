@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "FitHub",
+    "slug": "fithub",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "fithub",
+    "userInterfaceStyle": "automatic",
+    "ios": {
+      "supportsTablet": false,
+      "infoPlist": {
+        "NSCameraUsageDescription": "FitHub needs camera access to scan QR codes for gym check-in."
+      }
+    },
+    "android": {
+      "package": "com.fithub.app",
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "FitHub needs camera access to scan QR codes for gym check-in."
+        }
+      ],
+      "expo-notifications"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "e05fc8e5-ae9e-470c-a2b0-e2367e34fa1c"
+      },
+      "router": {
+        "origin": false
+      }
+    },
+    "owner": "salmanemad"
+  }
+}

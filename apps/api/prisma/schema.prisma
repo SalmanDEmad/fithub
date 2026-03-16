@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Gym {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String
+  slug              String   @unique
+  qr_secret         String   @default(dbgenerated("encode(gen_random_bytes(32), 'hex')"))
+  timezone          String   @default("UTC")
+  weekly_visit_goal Int      @default(3) @map("weekly_visit_goal")
+  avg_membership_fee Decimal @default(0) @map("avg_membership_fee") @db.Decimal(10, 2)
+  created_at        DateTime @default(now()) @map("created_at") @db.Timestamptz
+
+  members Member[]
+  invites GymInvite[]
+
+  @@map("gyms")
+}
+
+/// NOTE: user_id references auth.users(id) in Supabase via the SQL migration.
+/// Prisma cannot model cross-schema FKs, so the FK is DB-level only.
+model Member {
+  id                    String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String   @db.Uuid
+  gym_id                String   @db.Uuid
+  display_name          String
+  role                  String   @default("member")
+  visible_to_members    Boolean  @default(true)
+  buddy_matching_opt_in Boolean  @default(false)
+  personal_weekly_goal  Int?     @map("personal_weekly_goal")
+  joined_at             DateTime @default(now()) @map("joined_at") @db.Timestamptz
+
+  gym           Gym               @relation(fields: [gym_id], references: [id], onDelete: Cascade)
+  attendance    AttendanceEvent[]
+  streak        MemberStreak?
+  notifications NotificationLog[]
+  push_devices  PushDevice[]
+
+  @@unique([user_id, gym_id])
+  @@map("members")
+}
+
+model AttendanceEvent {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  member_id     String   @db.Uuid
+  checked_in_at DateTime @default(now()) @map("checked_in_at") @db.Timestamptz
+  method        String   @default("qr")
+
+  member Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@index([member_id, checked_in_at(sort: Desc)])
+  @@map("attendance_events")
+}
+
+model MemberStreak {
+  member_id            String    @id @db.Uuid
+  current_streak_weeks Int       @default(0)
+  longest_streak_weeks Int       @default(0)
+  visits_this_week     Int       @default(0)
+  week_start           DateTime  @db.Date
+  last_visit_at        DateTime? @db.Timestamptz
+  risk_level           String    @default("active")
+  rest_week_balance    Int       @default(0)
+  rest_week_used_at    DateTime? @db.Date
+  updated_at           DateTime  @default(now()) @map("updated_at") @db.Timestamptz
+
+  member Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@map("member_streaks")
+}
+
+model NotificationLog {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  member_id         String   @db.Uuid
+  notification_type String
+  sent_at           DateTime @default(now()) @db.Timestamptz
+  cooldown_until    DateTime @db.Timestamptz
+
+  member Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@index([member_id, notification_type, cooldown_until(sort: Desc)])
+  @@map("notification_log")
+}
+
+model PushDevice {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  member_id       String    @db.Uuid
+  expo_push_token String    @unique
+  platform        String
+  device_name     String?
+  disabled_at     DateTime? @db.Timestamptz
+  last_error_at   DateTime? @db.Timestamptz
+  last_sent_at    DateTime? @db.Timestamptz
+  created_at      DateTime  @default(now()) @db.Timestamptz
+  updated_at      DateTime  @default(now()) @db.Timestamptz
+
+  member Member @relation(fields: [member_id], references: [id], onDelete: Cascade)
+
+  @@index([member_id, disabled_at])
+  @@map("push_devices")
+}
+
+model GymInvite {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  gym_id     String    @db.Uuid
+  code       String    @unique @default(dbgenerated("encode(gen_random_bytes(6), 'hex')"))
+  max_uses   Int?
+  uses       Int       @default(0)
+  expires_at DateTime? @db.Timestamptz
+  created_at DateTime  @default(now()) @db.Timestamptz
+
+  gym Gym @relation(fields: [gym_id], references: [id], onDelete: Cascade)
+
+  @@map("gym_invites")
+}

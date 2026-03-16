@@ -1,0 +1,58 @@
+@import "@fithub/tokens/build/variables.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    @apply bg-background text-foreground;
+  }
+
+  body {
+    @apply min-h-screen bg-background text-foreground antialiased;
+    background-image:
+      radial-gradient(circle at top, rgba(22, 163, 74, 0.12), transparent 32%),
+      linear-gradient(180deg, rgba(240, 253, 244, 0.6), transparent 55%);
+  }
+
+  button,
+  input,
+  textarea,
+  select {
+    font: inherit;
+  }
+
+  a {
+    @apply text-primary no-underline;
+  }
+}
+
+@layer utilities {
+  .dashboard-shell {
+    @apply min-h-screen bg-background text-foreground;
+  }
+
+  .page-grid {
+    @apply mx-auto flex w-full max-w-7xl flex-col gap-6 px-4 py-6 sm:px-6 lg:px-8;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}

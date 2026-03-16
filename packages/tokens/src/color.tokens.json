@@ -1,0 +1,24 @@
+{
+  "bg": {
+    "surface": "#ffffff",
+    "muted": "#f8fafc",
+    "accent": "#f0fdf4",
+    "canvas": "#f4f8f4"
+  },
+  "text": {
+    "primary": "#111827",
+    "secondary": "#4b5563",
+    "muted": "#6b7280",
+    "inverse": "#ffffff"
+  },
+  "status": {
+    "success": "#16a34a",
+    "warning": "#d97706",
+    "danger": "#dc2626",
+    "info": "#0f766e"
+  },
+  "border": {
+    "subtle": "#e5e7eb",
+    "strong": "#cbd5e1"
+  }
+}

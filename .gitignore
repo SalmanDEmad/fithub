@@ -1,0 +1,85 @@
+node_modules/
+dist/
+build/
+.turbo/
+coverage/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env*.defaults*
+
+# Logs
+*.log
+logs/
+*.log.*
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Next.js
+.next/
+out/
+.nextjs/
+public/.next
+
+# Expo
+.expo/
+.expo-shared/
+dist/
+npm-debug.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+*.orig.*
+web-build/
+
+# NestJS
+dist/
+.nestjs/
+
+# TypeScript
+*.tsbuildinfo
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+*~
+.DS_Store
+
+# OS
+.DS_Store
+Thumbs.db
+*.code-workspace
+
+# Dependencies
+yarn.lock
+package-lock.json
+
+# Supabase
+supabase/.env.local
+supabase/.env
+.supabase/
+
+# Docker
+docker-compose.override.yml
+
+# Testing
+*.lcov
+.nyc_output/
+
+# Redis
+dump.rdb

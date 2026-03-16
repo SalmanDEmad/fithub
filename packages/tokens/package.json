@@ -1,0 +1,17 @@
+{
+  "name": "@fithub/tokens",
+  "version": "1.0.0",
+  "main": "build/tokens.js",
+  "types": "build/tokens.d.ts",
+  "files": [
+    "build",
+    "src"
+  ],
+  "scripts": {
+    "build": "node build.js",
+    "dev": "node build.js"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
